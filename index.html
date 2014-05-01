@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <title>User List</title>
+
+        <!-- Bootstrap -->
+        <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+
+        <div id="view">
+            <!-- Pages -->
+        </div>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+        <script>
+
+            // App Object
+            app = {};
+
+            app.loadPage = function(name){
+                app.loadView(name);
+                //app.loadController(name);         // Error
+            };
+
+            app.loadView = function(name){
+                $.ajax({
+                    url: "views/" + name + ".html",
+                    dataType: "text",
+                    success: function(data, text, xhr){
+                        $("#view").html(data);
+                        app.loadController(name);
+                    }
+                });
+            };
+
+            app.loadController = function(name){
+                $.ajax({
+                    url: "controllers/" + name + ".js",
+                    dataType: "text",
+                    success: function(data, text, xhr){
+                        $("#view").append("<script>" + data + "<\/script>");
+                    }
+                });
+            }
+
+            // Default page
+            $(function(){
+                app.loadPage("user-list");
+            });
+
+        </script>
+
+    </body>
+</html>
